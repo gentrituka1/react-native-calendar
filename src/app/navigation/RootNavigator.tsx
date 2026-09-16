@@ -17,7 +17,7 @@ export function RootNavigator() {
         <BrandMark size={72} />
         <ActivityIndicator color={colors.primary} style={styles.spinner} />
         <AppText variant="caption" color={colors.inkMuted}>
-          Loading your calendar
+          Loading Quipendar
         </AppText>
       </View>
     );

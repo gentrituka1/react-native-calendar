@@ -1,6 +1,6 @@
-# React Native Calendar
+# Quipendar
 
-Custom calendar app for the ProCredit React Native take-home: email auth, biometric re-entry, a Google Calendar-style month/day board built without a calendar library, and create/edit meetings.
+Custom calendar app (**Quipendar**) for the ProCredit React Native take-home: email auth, biometric re-entry, a Google Calendar-style month/day board built without a calendar library, and create/edit meetings.
 
 The default data source is **Async Storage** so a reviewer can clone and run without cloud credentials. Firebase Auth + Firestore is implemented behind the same repository contracts and can be switched on with one config flag.
 

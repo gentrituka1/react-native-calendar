@@ -83,7 +83,7 @@ export function AuthForm({
       <View style={styles.hero}>
         <BrandMark />
         <AppText variant="caption" color={colors.primary} style={styles.kicker}>
-          Personal calendar
+          Quipendar
         </AppText>
         <AppText variant="display">{title}</AppText>
         <AppText variant="body" color={colors.inkMuted}>
