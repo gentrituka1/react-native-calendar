@@ -6,7 +6,7 @@ import {
   View,
   type TextInputProps,
 } from 'react-native';
-import { colors, radius, spacing, typography } from '../theme/theme';
+import { colors, radius, spacing } from '../theme/theme';
 import { AppText } from './AppText';
 
 type Props = TextInputProps & {
@@ -18,7 +18,17 @@ type Props = TextInputProps & {
 type TextFieldRef = React.ComponentRef<typeof TextInput>;
 
 export const AppTextField = forwardRef<TextFieldRef, Props>(function AppTextField(
-  { label, error, hint, secureTextEntry, style, onFocus, onBlur, ...rest },
+  {
+    label,
+    error,
+    hint,
+    secureTextEntry,
+    style,
+    onFocus,
+    onBlur,
+    multiline,
+    ...rest
+  },
   ref,
 ) {
   const [hidden, setHidden] = useState(Boolean(secureTextEntry));
@@ -32,12 +42,14 @@ export const AppTextField = forwardRef<TextFieldRef, Props>(function AppTextFiel
       <View
         style={[
           styles.field,
+          multiline ? styles.fieldMultiline : null,
           focused ? styles.fieldFocused : null,
           error ? styles.fieldError : null,
         ]}>
         <TextInput
           ref={ref}
           {...rest}
+          multiline={multiline}
           onFocus={event => {
             setFocused(true);
             onFocus?.(event);
@@ -48,7 +60,13 @@ export const AppTextField = forwardRef<TextFieldRef, Props>(function AppTextFiel
           }}
           secureTextEntry={secureTextEntry ? hidden : false}
           placeholderTextColor={colors.inkFaint}
-          style={[styles.input, style]}
+          textAlignVertical={multiline ? 'top' : 'center'}
+          underlineColorAndroid="transparent"
+          style={[
+            styles.input,
+            multiline ? styles.inputMultiline : styles.inputSingle,
+            style,
+          ]}
         />
         {secureTextEntry ? (
           <Pressable
@@ -80,7 +98,7 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   field: {
-    minHeight: 54,
+    height: 52,
     borderRadius: radius.md,
     borderWidth: 1.5,
     borderColor: colors.border,
@@ -88,7 +106,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.xs,
+  },
+  fieldMultiline: {
+    height: undefined,
+    minHeight: 108,
+    alignItems: 'flex-start',
+    paddingVertical: spacing.sm,
   },
   fieldFocused: {
     borderColor: colors.primary,
@@ -100,7 +123,17 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: colors.ink,
-    ...typography.body,
-    paddingVertical: spacing.sm,
+    fontSize: 16,
+    fontWeight: '400',
+    padding: 0,
+    margin: 0,
+    includeFontPadding: false,
+  },
+  inputSingle: {
+    height: '100%',
+  },
+  inputMultiline: {
+    minHeight: 84,
+    textAlignVertical: 'top',
   },
 });

@@ -12,6 +12,7 @@ import {
 import { layoutDayEvents } from '../domain/eventLayout';
 
 const HOUR_HEIGHT = 64;
+const TIME_GUTTER = 58;
 const HOURS = Array.from({ length: 24 }, (_, hour) => hour);
 
 type Props = {
@@ -37,38 +38,47 @@ export function DayTimeline({ day, events, onPressEvent }: Props) {
             <View style={styles.line} />
           </View>
         ))}
-        {positioned.map(item => {
-          const top = (item.startMinutes / 60) * HOUR_HEIGHT;
-          const height = Math.max(
-            28,
-            ((item.endMinutes - item.startMinutes) / 60) * HOUR_HEIGHT - 4,
-          );
-          const widthPercent = 100 / item.columnCount;
-          return (
-            <Pressable
-              key={item.event.id}
-              onPress={() => onPressEvent(item.event)}
-              style={[
-                styles.event,
-                {
-                  top,
-                  height,
-                  left: `${10 + item.column * widthPercent * 0.72}%`,
-                  width: `${widthPercent * 0.7}%`,
-                  backgroundColor: colors.event[item.event.color],
-                },
-              ]}>
-              <AppText variant="caption" color={colors.white} numberOfLines={1} style={styles.eventTitle}>
-                {item.event.title}
-              </AppText>
-              {height > 36 ? (
-                <AppText variant="caption" color={colors.white} style={styles.eventTime}>
-                  {formatTime(new Date(item.event.startAt))}
+        <View style={styles.eventLane} pointerEvents="box-none">
+          {positioned.map(item => {
+            const top = (item.startMinutes / 60) * HOUR_HEIGHT;
+            const height = Math.max(
+              28,
+              ((item.endMinutes - item.startMinutes) / 60) * HOUR_HEIGHT - 4,
+            );
+            const widthPercent = 100 / item.columnCount;
+            return (
+              <Pressable
+                key={item.event.id}
+                onPress={() => onPressEvent(item.event)}
+                style={[
+                  styles.event,
+                  {
+                    top,
+                    height,
+                    left: `${item.column * widthPercent}%`,
+                    width: `${widthPercent}%`,
+                    backgroundColor: colors.event[item.event.color],
+                  },
+                ]}>
+                <AppText
+                  variant="caption"
+                  color={colors.white}
+                  numberOfLines={1}
+                  style={styles.eventTitle}>
+                  {item.event.title}
                 </AppText>
-              ) : null}
-            </Pressable>
-          );
-        })}
+                {height > 36 ? (
+                  <AppText
+                    variant="caption"
+                    color={colors.white}
+                    style={styles.eventTime}>
+                    {formatTime(new Date(item.event.startAt))}
+                  </AppText>
+                ) : null}
+              </Pressable>
+            );
+          })}
+        </View>
         {showNow ? (
           <View style={[styles.now, { top: nowTop }]}>
             <View style={styles.nowDot} />
@@ -86,7 +96,6 @@ const styles = StyleSheet.create({
   },
   timeline: {
     position: 'relative',
-    paddingLeft: spacing.xs,
   },
   hourRow: {
     height: HOUR_HEIGHT,
@@ -94,7 +103,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   label: {
-    width: 52,
+    width: TIME_GUTTER,
+    textAlign: 'right',
+    paddingRight: spacing.sm,
   },
   line: {
     flex: 1,
@@ -103,11 +114,19 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginRight: 16,
   },
+  eventLane: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: TIME_GUTTER + 6,
+    right: 16,
+  },
   event: {
     position: 'absolute',
     borderRadius: radius.sm,
     paddingHorizontal: 8,
     paddingVertical: 6,
+    paddingRight: 10,
   },
   eventTitle: {
     fontWeight: '700',
@@ -118,7 +137,7 @@ const styles = StyleSheet.create({
   },
   now: {
     position: 'absolute',
-    left: 46,
+    left: TIME_GUTTER - 5,
     right: 16,
     flexDirection: 'row',
     alignItems: 'center',

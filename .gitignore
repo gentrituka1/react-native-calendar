@@ -79,5 +79,8 @@ GoogleService-Info.plist
 !.yarn/sdks
 !.yarn/versions
 
-ios
-android
+# Keep the native projects in git. This is a bare React Native app, not Expo.
+# Reviewers need ios/ and android/ to build. Only generated output is ignored above
+# (Pods, build, .gradle, DerivedData).
+
+dist/

@@ -103,12 +103,14 @@ const styles = StyleSheet.create({
     minHeight: 76,
   },
   timeCol: {
-    width: 52,
+    width: 56,
+    flexShrink: 0,
     paddingTop: 10,
     gap: 2,
   },
   body: {
     flex: 1,
+    minWidth: 0,
     borderRadius: radius.md,
     overflow: 'hidden',
     flexDirection: 'row',

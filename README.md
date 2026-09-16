@@ -168,7 +168,7 @@ Native modules (Keychain, biometrics, Firebase client) are mocked at the Jest bo
 
 ## Screenshots
 
-Add device captures under `docs/screenshots/` after running the app:
+Current captures from the iPhone 17 Pro simulator live in `docs/screenshots/`:
 
 - `01-sign-in.png`
 - `02-sign-up.png`
