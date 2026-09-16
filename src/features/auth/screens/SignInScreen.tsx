@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useAuth } from '../../../app/providers/AuthProvider';
 import { getErrorMessage } from '../../../core/errors/AppError';
 import type { AuthScreenProps } from '../../../app/navigation/types';
-import { AppButton } from '../../../shared/ui/AppButton';
 import { Screen } from '../../../shared/ui/Screen';
 import { AuthForm, AuthLink } from '../components/AuthForm';
+import { BiometricButton } from '../components/BiometricButton';
 
 export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
   const {
@@ -20,16 +20,16 @@ export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
   return (
     <Screen keyboard edges={{ top: true, bottom: true }}>
       <AuthForm
+        mode="signIn"
         title="Welcome back"
-        subtitle="Sign in to manage your meetings."
+        subtitle="Sign in to pick up your meetings, or unlock with a saved biometric login."
         submitLabel="Sign in"
         loading={isSubmitting}
         error={error}
         extra={
           biometricsAvailable && hasBiometricLogin ? (
-            <AppButton
-              variant="secondary"
-              label={`Sign in with ${biometricLabel}`}
+            <BiometricButton
+              label={biometricLabel}
               onPress={async () => {
                 setError('');
                 try {
@@ -44,7 +44,7 @@ export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
         footer={
           <AuthLink
             prompt="Need an account?"
-            action="Sign up"
+            action="Create one"
             onPress={() => navigation.navigate('SignUp')}
           />
         }

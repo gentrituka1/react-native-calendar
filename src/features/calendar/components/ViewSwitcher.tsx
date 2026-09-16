@@ -37,13 +37,15 @@ export function ViewSwitcher({ value, onChange }: Props) {
 const styles = StyleSheet.create({
   wrap: {
     flexDirection: 'row',
-    backgroundColor: colors.surfaceMuted,
+    backgroundColor: colors.surface,
     borderRadius: radius.pill,
     padding: 3,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   item: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 6,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 7,
     borderRadius: radius.pill,
   },
   active: {
@@ -51,5 +53,6 @@ const styles = StyleSheet.create({
   },
   label: {
     textTransform: 'capitalize',
+    fontWeight: '700',
   },
 });

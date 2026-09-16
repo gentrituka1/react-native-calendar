@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -12,10 +12,17 @@ import { AppText } from './AppText';
 type Props = TextInputProps & {
   label: string;
   error?: string;
+  hint?: string;
 };
 
-export function AppTextField({ label, error, secureTextEntry, style, ...rest }: Props) {
+type TextFieldRef = React.ComponentRef<typeof TextInput>;
+
+export const AppTextField = forwardRef<TextFieldRef, Props>(function AppTextField(
+  { label, error, hint, secureTextEntry, style, onFocus, onBlur, ...rest },
+  ref,
+) {
   const [hidden, setHidden] = useState(Boolean(secureTextEntry));
+  const [focused, setFocused] = useState(false);
 
   return (
     <View style={styles.wrap}>
@@ -25,10 +32,20 @@ export function AppTextField({ label, error, secureTextEntry, style, ...rest }: 
       <View
         style={[
           styles.field,
+          focused ? styles.fieldFocused : null,
           error ? styles.fieldError : null,
         ]}>
         <TextInput
+          ref={ref}
           {...rest}
+          onFocus={event => {
+            setFocused(true);
+            onFocus?.(event);
+          }}
+          onBlur={event => {
+            setFocused(false);
+            onBlur?.(event);
+          }}
           secureTextEntry={secureTextEntry ? hidden : false}
           placeholderTextColor={colors.inkFaint}
           style={[styles.input, style]}
@@ -49,25 +66,33 @@ export function AppTextField({ label, error, secureTextEntry, style, ...rest }: 
         <AppText variant="caption" color={colors.danger}>
           {error}
         </AppText>
+      ) : hint ? (
+        <AppText variant="caption" color={colors.inkFaint}>
+          {hint}
+        </AppText>
       ) : null}
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   wrap: {
     gap: spacing.xxs,
   },
   field: {
-    minHeight: 52,
+    minHeight: 54,
     borderRadius: radius.md,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: colors.border,
     backgroundColor: colors.white,
     paddingHorizontal: spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
+  },
+  fieldFocused: {
+    borderColor: colors.primary,
+    backgroundColor: colors.surface,
   },
   fieldError: {
     borderColor: colors.danger,

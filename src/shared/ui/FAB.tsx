@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import { colors, radius } from '../theme/theme';
+import { colors, radius, shadows } from '../theme/theme';
 import { AppText } from './AppText';
 
 type Props = {
@@ -26,22 +26,18 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 20,
-    bottom: 20,
-    width: 58,
-    height: 58,
+    bottom: 22,
+    width: 60,
+    height: 60,
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 4,
-    shadowColor: colors.ink,
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
+    ...shadows.float,
   },
   plus: {
     color: colors.white,
-    fontSize: 32,
-    lineHeight: 34,
+    fontSize: 34,
+    lineHeight: 36,
     fontWeight: '400',
   },
 });

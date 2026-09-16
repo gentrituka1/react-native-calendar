@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import type { CalendarEvent } from '../../../core/types/events';
-import { colors, radius } from '../../../shared/theme/theme';
+import { colors, radius, spacing } from '../../../shared/theme/theme';
 import { AppText } from '../../../shared/ui/AppText';
 import {
   formatHourLabel,
+  formatTime,
   isSameDay,
   minutesFromMidnight,
 } from '../domain/calendarDate';
 import { layoutDayEvents } from '../domain/eventLayout';
 
-const HOUR_HEIGHT = 56;
+const HOUR_HEIGHT = 64;
 const HOURS = Array.from({ length: 24 }, (_, hour) => hour);
 
 type Props = {
@@ -39,8 +40,8 @@ export function DayTimeline({ day, events, onPressEvent }: Props) {
         {positioned.map(item => {
           const top = (item.startMinutes / 60) * HOUR_HEIGHT;
           const height = Math.max(
-            22,
-            ((item.endMinutes - item.startMinutes) / 60) * HOUR_HEIGHT,
+            28,
+            ((item.endMinutes - item.startMinutes) / 60) * HOUR_HEIGHT - 4,
           );
           const widthPercent = 100 / item.columnCount;
           return (
@@ -52,14 +53,19 @@ export function DayTimeline({ day, events, onPressEvent }: Props) {
                 {
                   top,
                   height,
-                  left: `${8 + item.column * widthPercent * 0.72}%`,
+                  left: `${10 + item.column * widthPercent * 0.72}%`,
                   width: `${widthPercent * 0.7}%`,
                   backgroundColor: colors.event[item.event.color],
                 },
               ]}>
-              <AppText variant="caption" color={colors.white} numberOfLines={2}>
+              <AppText variant="caption" color={colors.white} numberOfLines={1} style={styles.eventTitle}>
                 {item.event.title}
               </AppText>
+              {height > 36 ? (
+                <AppText variant="caption" color={colors.white} style={styles.eventTime}>
+                  {formatTime(new Date(item.event.startAt))}
+                </AppText>
+              ) : null}
             </Pressable>
           );
         })}
@@ -80,7 +86,7 @@ const styles = StyleSheet.create({
   },
   timeline: {
     position: 'relative',
-    paddingLeft: 8,
+    paddingLeft: spacing.xs,
   },
   hourRow: {
     height: HOUR_HEIGHT,
@@ -88,32 +94,39 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   label: {
-    width: 48,
+    width: 52,
   },
   line: {
     flex: 1,
     height: StyleSheet.hairlineWidth,
     backgroundColor: colors.border,
     marginTop: 8,
-    marginRight: 12,
+    marginRight: 16,
   },
   event: {
     position: 'absolute',
     borderRadius: radius.sm,
-    paddingHorizontal: 6,
-    paddingVertical: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+  },
+  eventTitle: {
+    fontWeight: '700',
+  },
+  eventTime: {
+    opacity: 0.9,
+    marginTop: 2,
   },
   now: {
     position: 'absolute',
-    left: 42,
-    right: 12,
+    left: 46,
+    right: 16,
     flexDirection: 'row',
     alignItems: 'center',
   },
   nowDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
     backgroundColor: colors.accent,
   },
   nowLine: {

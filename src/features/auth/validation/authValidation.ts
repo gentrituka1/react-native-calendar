@@ -3,6 +3,13 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export type AuthFieldErrors = {
   email?: string;
   password?: string;
+  confirm?: string;
+};
+
+export type PasswordChecks = {
+  minLength: boolean;
+  letter: boolean;
+  number: boolean;
 };
 
 export function normalizeEmail(email: string): string {
@@ -50,5 +57,26 @@ export function validateAuthForm(
 }
 
 export function hasAuthFieldErrors(errors: AuthFieldErrors): boolean {
-  return Boolean(errors.email || errors.password);
+  return Boolean(errors.email || errors.password || errors.confirm);
+}
+
+export function getPasswordChecks(password: string): PasswordChecks {
+  return {
+    minLength: password.length >= 8,
+    letter: /[A-Za-z]/.test(password),
+    number: /\d/.test(password),
+  };
+}
+
+export function validatePasswordConfirmation(
+  password: string,
+  confirmation: string,
+): string | undefined {
+  if (!confirmation) {
+    return 'Confirm your password.';
+  }
+  if (password !== confirmation) {
+    return 'Passwords do not match.';
+  }
+  return undefined;
 }

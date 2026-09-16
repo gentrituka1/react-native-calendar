@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import {
   ActivityIndicator,
   Pressable,
   StyleSheet,
+  View,
   type PressableProps,
 } from 'react-native';
 import { colors, radius, spacing, typography } from '../theme/theme';
@@ -14,6 +15,7 @@ type Props = PressableProps & {
   label: string;
   loading?: boolean;
   variant?: Variant;
+  icon?: ReactNode;
 };
 
 const variantStyles: Record<
@@ -29,7 +31,7 @@ const variantStyles: Record<
     background: colors.surface,
     pressed: colors.surfaceMuted,
     text: colors.ink,
-    border: colors.border,
+    border: colors.borderStrong,
   },
   ghost: {
     background: 'transparent',
@@ -47,6 +49,7 @@ export function AppButton({
   label,
   loading = false,
   variant = 'primary',
+  icon,
   disabled,
   style,
   ...rest
@@ -73,7 +76,10 @@ export function AppButton({
       {loading ? (
         <ActivityIndicator color={palette.text} />
       ) : (
-        <AppText style={[styles.label, { color: palette.text }]}>{label}</AppText>
+        <View style={styles.content}>
+          {icon}
+          <AppText style={[styles.label, { color: palette.text }]}>{label}</AppText>
+        </View>
       )}
     </Pressable>
   );
@@ -81,11 +87,16 @@ export function AppButton({
 
 const styles = StyleSheet.create({
   base: {
-    minHeight: 52,
+    minHeight: 54,
     borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.lg,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
   },
   label: {
     ...typography.subtitle,

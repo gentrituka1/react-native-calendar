@@ -12,9 +12,10 @@ export function SignUpScreen({ navigation }: AuthScreenProps<'SignUp'>) {
   return (
     <Screen keyboard edges={{ top: true, bottom: true }}>
       <AuthForm
-        title="Create account"
-        subtitle="Register to keep your calendar in sync on this device."
-        submitLabel="Sign up"
+        mode="signUp"
+        title="Create your calendar"
+        subtitle="A few details and you can start adding meetings on this device."
+        submitLabel="Create account"
         loading={isSubmitting}
         error={error}
         footer={

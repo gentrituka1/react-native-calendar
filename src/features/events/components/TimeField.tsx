@@ -32,7 +32,7 @@ export function TimeField({ label, value, onChange }: Props) {
 
   const openSheet = () => {
     setHour(value.getHours());
-    setMinute(Math.round(value.getMinutes() / 5) * 5 % 60);
+    setMinute((Math.round(value.getMinutes() / 5) * 5) % 60);
     setOpen(true);
   };
 
@@ -49,12 +49,16 @@ export function TimeField({ label, value, onChange }: Props) {
         <AppText variant="caption" color={colors.inkMuted}>
           {label}
         </AppText>
-        <AppText variant="subtitle">{display}</AppText>
+        <AppText variant="title">{display}</AppText>
       </Pressable>
       <Modal visible={open} transparent animationType="slide" onRequestClose={() => setOpen(false)}>
         <Pressable style={styles.overlay} onPress={() => setOpen(false)}>
           <Pressable style={styles.sheet} onPress={() => undefined}>
+            <View style={styles.handle} />
             <AppText variant="subtitle">{label}</AppText>
+            <AppText variant="caption" color={colors.inkMuted}>
+              Choose an hour and a 5-minute increment
+            </AppText>
             <View style={styles.columns}>
               <ScrollView style={styles.column}>
                 {HOURS.map(item => (
@@ -62,7 +66,7 @@ export function TimeField({ label, value, onChange }: Props) {
                     key={item}
                     onPress={() => setHour(item)}
                     style={[styles.option, hour === item ? styles.optionActive : null]}>
-                    <AppText color={hour === item ? colors.white : colors.ink}>
+                    <AppText color={hour === item ? colors.white : colors.ink} variant="subtitle">
                       {pad2(item)}
                     </AppText>
                   </Pressable>
@@ -74,7 +78,7 @@ export function TimeField({ label, value, onChange }: Props) {
                     key={item}
                     onPress={() => setMinute(item)}
                     style={[styles.option, minute === item ? styles.optionActive : null]}>
-                    <AppText color={minute === item ? colors.white : colors.ink}>
+                    <AppText color={minute === item ? colors.white : colors.ink} variant="subtitle">
                       {pad2(item)}
                     </AppText>
                   </Pressable>
@@ -94,9 +98,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     borderRadius: radius.md,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: colors.border,
-    padding: spacing.sm,
+    padding: spacing.md,
     gap: 4,
   },
   overlay: {
@@ -106,11 +110,19 @@ const styles = StyleSheet.create({
   },
   sheet: {
     backgroundColor: colors.surface,
-    borderTopLeftRadius: radius.lg,
-    borderTopRightRadius: radius.lg,
-    padding: spacing.md,
+    borderTopLeftRadius: radius.xl,
+    borderTopRightRadius: radius.xl,
+    padding: spacing.lg,
     gap: spacing.sm,
-    maxHeight: '70%',
+    maxHeight: '72%',
+  },
+  handle: {
+    alignSelf: 'center',
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.borderStrong,
+    marginBottom: spacing.xs,
   },
   columns: {
     flexDirection: 'row',

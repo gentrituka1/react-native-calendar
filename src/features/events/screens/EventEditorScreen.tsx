@@ -9,6 +9,7 @@ import { AppButton } from '../../../shared/ui/AppButton';
 import { AppHeader } from '../../../shared/ui/AppHeader';
 import { AppText } from '../../../shared/ui/AppText';
 import { AppTextField } from '../../../shared/ui/AppTextField';
+import { Card } from '../../../shared/ui/Card';
 import { ErrorBanner } from '../../../shared/ui/ErrorBanner';
 import { Screen } from '../../../shared/ui/Screen';
 import {
@@ -119,47 +120,67 @@ export function EventEditorScreen({
   const emptyEvents = useMemo(() => [], []);
 
   return (
-    <Screen edges={{ top: true, bottom: true }}>
-      <AppHeader title={heading} onBack={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={styles.content}>
+    <Screen keyboard edges={{ top: true, bottom: true }}>
+      <AppHeader
+        title={heading}
+        subtitle="Title, time, and color"
+        onBack={() => navigation.goBack()}
+      />
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.content}>
         {error ? <ErrorBanner message={error} /> : null}
-        <AppTextField
-          label="Title"
-          value={title}
-          onChangeText={setTitle}
-          error={fieldErrors.title}
-          placeholder="Team standup"
-        />
-        <AppTextField
-          label="Description"
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Optional notes"
-          multiline
-        />
-        <AppText variant="label" color={colors.inkMuted}>
-          Date · {formatMonthTitle(visibleMonth)}
-        </AppText>
-        <MonthGrid
-          monthDate={visibleMonth}
-          selectedDate={day}
-          weekStartsOn={appConfig.weekStartsOn}
-          events={emptyEvents}
-          onSelectDate={applyDay}
-        />
-        <View style={styles.times}>
-          <TimeField label="Starts" value={startAt} onChange={setStartAt} />
-          <TimeField label="Ends" value={endAt} onChange={setEndAt} />
-        </View>
-        {fieldErrors.time ? (
-          <AppText variant="caption" color={colors.danger}>
-            {fieldErrors.time}
+        <Card style={styles.section}>
+          <AppText variant="label" color={colors.inkMuted}>
+            Details
           </AppText>
-        ) : null}
-        <AppText variant="label" color={colors.inkMuted}>
-          Color
-        </AppText>
-        <ColorPicker value={color} onChange={setColor} />
+          <AppTextField
+            label="Title"
+            value={title}
+            onChangeText={setTitle}
+            error={fieldErrors.title}
+            placeholder="Team standup"
+          />
+          <AppTextField
+            label="Description"
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Optional notes"
+            multiline
+          />
+        </Card>
+        <Card style={styles.section} padded={false}>
+          <View style={styles.sectionPad}>
+            <AppText variant="label" color={colors.inkMuted}>
+              Date · {formatMonthTitle(visibleMonth)}
+            </AppText>
+          </View>
+          <MonthGrid
+            monthDate={visibleMonth}
+            selectedDate={day}
+            weekStartsOn={appConfig.weekStartsOn}
+            events={emptyEvents}
+            onSelectDate={applyDay}
+          />
+          <View style={[styles.sectionPad, styles.times]}>
+            <TimeField label="Starts" value={startAt} onChange={setStartAt} />
+            <TimeField label="Ends" value={endAt} onChange={setEndAt} />
+          </View>
+          {fieldErrors.time ? (
+            <AppText
+              variant="caption"
+              color={colors.danger}
+              style={styles.timeError}>
+              {fieldErrors.time}
+            </AppText>
+          ) : null}
+        </Card>
+        <Card style={styles.section}>
+          <AppText variant="label" color={colors.inkMuted}>
+            Color
+          </AppText>
+          <ColorPicker value={color} onChange={setColor} />
+        </Card>
         <AppButton
           label={existing ? 'Save changes' : 'Create meeting'}
           onPress={save}
@@ -183,8 +204,20 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingBottom: spacing.xxl,
   },
+  section: {
+    gap: spacing.md,
+  },
+  sectionPad: {
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+  },
   times: {
     flexDirection: 'row',
     gap: spacing.sm,
+    paddingBottom: spacing.md,
+  },
+  timeError: {
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.md,
   },
 });

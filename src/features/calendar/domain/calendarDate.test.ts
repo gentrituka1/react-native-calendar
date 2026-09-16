@@ -2,6 +2,7 @@ import {
   addDays,
   addMonths,
   combineDateAndTime,
+  formatAgendaHeading,
   formatHourLabel,
   formatMonthTitle,
   formatTime,
@@ -40,6 +41,7 @@ describe('calendarDate', () => {
     expect(formatMonthTitle(new Date(2026, 8, 1))).toBe('September 2026');
     expect(formatTime(new Date(2026, 8, 14, 9, 5))).toBe('09:05');
     expect(formatHourLabel(7)).toBe('07:00');
+    expect(formatAgendaHeading(new Date(2026, 8, 16))).toBe('Wednesday 16');
   });
 
   it('round-trips ISO dates without timezone shift', () => {

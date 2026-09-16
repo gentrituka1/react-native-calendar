@@ -35,15 +35,12 @@ export function DayCell({ cell, selectedDate, today, dots, onPress }: Props) {
           todayCell && !selected ? styles.today : null,
           selected ? styles.selected : null,
         ]}>
-        <AppText
-          variant="caption"
-          color={textColor}
-          style={styles.number}>
+        <AppText variant="label" color={textColor} style={styles.number}>
           {cell.date.getDate()}
         </AppText>
       </View>
       <View style={styles.dots}>
-        {dots.map(color => (
+        {dots.slice(0, 3).map(color => (
           <View
             key={color}
             style={[styles.dot, { backgroundColor: colors.event[color] }]}
@@ -58,29 +55,28 @@ const styles = StyleSheet.create({
   cell: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 4,
-    minHeight: 52,
+    paddingVertical: 6,
+    minHeight: 56,
   },
   bubble: {
-    width: 32,
-    height: 32,
+    width: 34,
+    height: 34,
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
   },
   today: {
-    borderWidth: 1.5,
-    borderColor: colors.primary,
+    backgroundColor: colors.primarySoft,
   },
   selected: {
     backgroundColor: colors.primary,
   },
   number: {
-    fontWeight: '600',
+    fontWeight: '700',
   },
   dots: {
     height: 8,
-    marginTop: 2,
+    marginTop: 4,
     flexDirection: 'row',
     gap: 3,
   },

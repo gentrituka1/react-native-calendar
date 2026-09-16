@@ -23,6 +23,16 @@ export const WEEKDAY_LABELS_SUNDAY = [
   'Sat',
 ] as const;
 
+export const WEEKDAY_NAMES = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+] as const;
+
 export type CalendarCell = {
   date: Date;
   inCurrentMonth: boolean;
@@ -68,6 +78,10 @@ export function formatMonthTitle(date: Date): string {
 export function formatDayHeading(date: Date): string {
   const weekday = WEEKDAY_LABELS_SUNDAY[date.getDay()];
   return `${weekday}, ${date.getDate()} ${MONTH_NAMES[date.getMonth()]}`;
+}
+
+export function formatAgendaHeading(date: Date): string {
+  return `${WEEKDAY_NAMES[date.getDay()]} ${date.getDate()}`;
 }
 
 export function formatTime(date: Date): string {

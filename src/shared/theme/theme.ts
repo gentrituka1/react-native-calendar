@@ -1,27 +1,38 @@
 export const colors = {
-  background: '#F3F0E8',
-  surface: '#FFFCF6',
-  surfaceMuted: '#EAE4D8',
-  ink: '#1C2833',
-  inkMuted: '#5C6B73',
-  inkFaint: '#8A959C',
-  primary: '#1D6B57',
-  primaryPressed: '#155445',
-  primarySoft: '#D7EBE4',
-  accent: '#C45C26',
-  accentPressed: '#A3491C',
+  background: '#F4EFE4',
+  backgroundDeep: '#E7DFD0',
+  surface: '#FFFCF7',
+  surfaceMuted: '#EFE7D9',
+  ink: '#1A242C',
+  inkMuted: '#5B676F',
+  inkFaint: '#8B959C',
+  primary: '#1B6B56',
+  primaryPressed: '#145343',
+  primarySoft: '#D5EBE3',
+  accent: '#C45A24',
+  accentPressed: '#A3481B',
+  accentSoft: '#F7E3D6',
   danger: '#B42318',
   dangerSoft: '#F8E2DF',
-  border: '#E4DDD0',
-  overlay: 'rgba(28, 40, 51, 0.45)',
+  success: '#1B6B56',
+  border: '#E5DDD0',
+  borderStrong: '#D4CBBB',
+  overlay: 'rgba(26, 36, 44, 0.48)',
   white: '#FFFFFF',
-  today: '#1D6B57',
+  today: '#1B6B56',
   event: {
-    moss: '#1D6B57',
-    terracotta: '#C45C26',
-    indigo: '#3F5BD2',
+    moss: '#1B6B56',
+    terracotta: '#C45A24',
+    indigo: '#3E58C9',
     gold: '#C3922E',
     plum: '#8A4D76',
+  },
+  eventSoft: {
+    moss: '#D8EDE5',
+    terracotta: '#F8E4D6',
+    indigo: '#E2E7FA',
+    gold: '#F6EAC8',
+    plum: '#F1E2EC',
   },
 } as const;
 
@@ -36,23 +47,25 @@ export const spacing = {
 } as const;
 
 export const radius = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
+  sm: 10,
+  md: 14,
+  lg: 20,
+  xl: 28,
   pill: 999,
 } as const;
 
 export const typography = {
   display: {
-    fontSize: 32,
-    lineHeight: 38,
+    fontSize: 34,
+    lineHeight: 40,
     fontWeight: '700' as const,
+    letterSpacing: -0.6,
   },
   title: {
     fontSize: 22,
     lineHeight: 28,
     fontWeight: '700' as const,
+    letterSpacing: -0.3,
   },
   subtitle: {
     fontSize: 16,
@@ -76,11 +89,36 @@ export const typography = {
   },
 };
 
+export const shadows = {
+  card: {
+    shadowColor: '#1A242C',
+    shadowOpacity: 0.07,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 3,
+  },
+  float: {
+    shadowColor: '#1A242C',
+    shadowOpacity: 0.16,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
+  },
+  tab: {
+    shadowColor: '#1A242C',
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
+  },
+} as const;
+
 export const theme = {
   colors,
   spacing,
   radius,
   typography,
+  shadows,
 };
 
 export type Theme = typeof theme;

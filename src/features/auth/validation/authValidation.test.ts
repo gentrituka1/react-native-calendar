@@ -1,9 +1,11 @@
 import {
+  getPasswordChecks,
   hasAuthFieldErrors,
   normalizeEmail,
   validateAuthForm,
   validateEmail,
   validatePassword,
+  validatePasswordConfirmation,
 } from './authValidation';
 
 describe('authValidation', () => {
@@ -39,5 +41,28 @@ describe('authValidation', () => {
     expect(hasAuthFieldErrors(validateAuthForm('a@b.co', 'Password1'))).toBe(
       false,
     );
+  });
+
+  it('tracks password rule progress', () => {
+    expect(getPasswordChecks('ab')).toEqual({
+      minLength: false,
+      letter: true,
+      number: false,
+    });
+    expect(getPasswordChecks('Password1')).toEqual({
+      minLength: true,
+      letter: true,
+      number: true,
+    });
+  });
+
+  it('requires matching confirmation', () => {
+    expect(validatePasswordConfirmation('Password1', '')).toBe(
+      'Confirm your password.',
+    );
+    expect(validatePasswordConfirmation('Password1', 'Password2')).toBe(
+      'Passwords do not match.',
+    );
+    expect(validatePasswordConfirmation('Password1', 'Password1')).toBeUndefined();
   });
 });

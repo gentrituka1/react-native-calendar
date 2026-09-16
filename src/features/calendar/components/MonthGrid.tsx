@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import type { CalendarEvent } from '../../../core/types/events';
 import { colors, spacing } from '../../../shared/theme/theme';
 import { AppText } from '../../../shared/ui/AppText';
+import { Card } from '../../../shared/ui/Card';
 import { getMonthMatrix, getWeekdayLabels } from '../domain/calendarDate';
 import { eventColorKeysOnDay } from '../domain/eventLayout';
 import { DayCell } from './DayCell';
@@ -13,6 +14,7 @@ type Props = {
   weekStartsOn: 0 | 1;
   events: CalendarEvent[];
   onSelectDate: (date: Date) => void;
+  framed?: boolean;
 };
 
 export function MonthGrid({
@@ -21,6 +23,7 @@ export function MonthGrid({
   weekStartsOn,
   events,
   onSelectDate,
+  framed = false,
 }: Props) {
   const weeks = useMemo(
     () => getMonthMatrix(monthDate, weekStartsOn),
@@ -29,7 +32,7 @@ export function MonthGrid({
   const labels = getWeekdayLabels(weekStartsOn);
   const today = useMemo(() => new Date(), []);
 
-  return (
+  const grid = (
     <View style={styles.wrap}>
       <View style={styles.weekRow}>
         {labels.map(label => (
@@ -59,18 +62,35 @@ export function MonthGrid({
       ))}
     </View>
   );
+
+  if (!framed) {
+    return grid;
+  }
+
+  return (
+    <Card padded={false} style={styles.frame}>
+      {grid}
+    </Card>
+  );
 }
 
 const styles = StyleSheet.create({
   wrap: {
     paddingHorizontal: spacing.xs,
     paddingBottom: spacing.sm,
+    paddingTop: spacing.xs,
+  },
+  frame: {
+    marginHorizontal: spacing.md,
   },
   weekRow: {
     flexDirection: 'row',
   },
   weekday: {
     flex: 1,
-    paddingVertical: spacing.xs,
+    paddingVertical: spacing.sm,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    fontSize: 11,
   },
 });

@@ -2,7 +2,9 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useAuth } from '../providers/AuthProvider';
-import { colors } from '../../shared/theme/theme';
+import { colors, spacing } from '../../shared/theme/theme';
+import { BrandMark } from '../../shared/ui/BrandMark';
+import { AppText } from '../../shared/ui/AppText';
 import { AppNavigator } from './AppNavigator';
 import { AuthNavigator } from './AuthNavigator';
 
@@ -12,7 +14,11 @@ export function RootNavigator() {
   if (!isReady) {
     return (
       <View style={styles.boot}>
-        <ActivityIndicator color={colors.primary} size="large" />
+        <BrandMark size={72} />
+        <ActivityIndicator color={colors.primary} style={styles.spinner} />
+        <AppText variant="caption" color={colors.inkMuted}>
+          Loading your calendar
+        </AppText>
       </View>
     );
   }
@@ -30,5 +36,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.background,
+    gap: spacing.md,
+  },
+  spinner: {
+    marginTop: spacing.xs,
   },
 });
